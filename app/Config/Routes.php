@@ -17,12 +17,17 @@ $routes->group('admin', ['filter' => ['auth', 'role:ADMIN']], function ($routes)
     $routes->get('dashboard', 'Admin::index');
     $routes->get('setting-company', 'Admin::settingCompany');
     $routes->post('setting-company/save', 'Admin::saveCompany');
+    $routes->post('setting-company/update', 'Admin::saveCompany');
     $routes->get('users', 'Admin::crudUser');
     $routes->post('users/save', 'Admin::saveUser');
     $routes->post('users/import-excel', 'Admin::importExcel');
     $routes->get('hierarchy', 'Admin::settingHierarchy');
+    $routes->post('hierarchy/store', 'Admin::saveHierarchy');
     $routes->post('hierarchy/save', 'Admin::saveHierarchy');
     $routes->get('monitor-reports', 'Admin::monitorReports');
+    $routes->post('users/store', 'Admin::storeUser');
+    $routes->post('users/update/(:num)', 'Admin::updateUser/$1');
+    $routes->get('users/delete/(:num)', 'Admin::deleteUser/$1');
 });
 
 $routes->group('staff', ['filter' => ['auth', 'role:STAFF']], function ($routes) {
