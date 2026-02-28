@@ -1,0 +1,121 @@
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Base class untuk background dinamis */
+.sidebar-animated-bg {
+    background-size: 300% 300% !important;
+    animation: gradientAnimation 10s ease infinite !important;
+    border-right: none !important;
+}
+
+/* Override teks Mazer agar terlihat jelas di atas background warna gelap */
+.sidebar-animated-bg .sidebar-menu ul li a span,
+.sidebar-animated-bg .sidebar-title,
+.sidebar-animated-bg .logo-text,
+.sidebar-animated-bg .user-name,
+.sidebar-animated-bg i {
+    color: #ffffff !important;
+}
+
+.sidebar-animated-bg .sidebar-menu ul li a:hover {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.sidebar-animated-bg .sidebar-menu ul li.active > a {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+    border-radius: 8px;
+}
+
+/* =========================================================
+   VARIAN WARNA BERDASARKAN LEVEL USER 
+   Cara pakai: tambahkan class ini ke div <div id="sidebar" class="sidebar-animated-bg theme-admin">
+   ========================================================= */
+
+/* 1. ADMIN - Nuansa Merah/Orange (Tegas, Pengendali) */
+.theme-admin {
+    background: linear-gradient(-45deg, #FF416C, #FF4B2B, #e63946, #d90429) !important;
+}
+
+/* 2. PIMPINAN TINGGI - Nuansa Ungu/Emas (Premium, Eksekutif) */
+.theme-pimpinan {
+    background: linear-gradient(-45deg, #4A00E0, #8E2DE2, #3a0ca3, #7209b7) !important;
+}
+
+/* 3. MANAGERIAL - Nuansa Biru Tua/Cyan (Profesional, Analitis) */
+.theme-managerial {
+    background: linear-gradient(-45deg, #1CB5E0, #000046, #023e8a, #0077b6) !important;
+}
+
+/* 4. SUPERVISOR - Nuansa Hijau/Teal (Pengawasan, Keseimbangan) */
+.theme-supervisor {
+    background: linear-gradient(-45deg, #11998e, #38ef7d, #2a9d8f, #264653) !important;
+}
+
+/* 5. KEPALA UNIT - Nuansa Kuning/Coklat Gelap (Solid, Unit Kerja) */
+.theme-kepala-unit {
+    background: linear-gradient(-45deg, #F2994A, #F2C94C, #e76f51, #f4a261) !important;
+}
+
+/* 6. STAFF - Nuansa Abu-abu Biru Muda / Modern Clean (Pelaksana) */
+.theme-staff {
+    background: linear-gradient(-45deg, #4b6cb7, #182848, #3f5efb, #fc466b) !important; /* Biru ke pink subtle */
+}
+
+/* Styling untuk area Profil User di Sidebar (Logo, Nama PT, Foto Profil) */
+.sidebar-profile-area {
+    text-align: center;
+    padding: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    margin-bottom: 15px;
+}
+
+.company-logo {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin-bottom: 10px;
+    background: #fff;
+    border-radius: 8px;
+    padding: 5px;
+}
+
+.company-name {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.user-photo-sidebar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255,255,255,0.5);
+    margin-bottom: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.user-fullname {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.user-role-badge {
+    font-size: 0.75rem;
+    background: rgba(0,0,0,0.3);
+    padding: 3px 10px;
+    border-radius: 12px;
+    display: inline-block;
+    margin-top: 5px;
+    letter-spacing: 1px;
+}
