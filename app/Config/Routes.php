@@ -30,7 +30,7 @@ $routes->group('admin', ['filter' => 'role:ADMIN'], static function ($routes) {
 });
 
 $routes->group('staff', ['filter' => 'role:STAFF'], static function ($routes) {
-    $routes->get('dashboard', 'AuthController::processLogin');
+    $routes->get('dashboard', 'StaffController::dashboard'); 
     
     $routes->get('audit/audit-bond', 'StaffDataAuditController::auditBond');
     $routes->post('audit/audit-bond/save', 'StaffDataAuditController::saveAuditBond');
@@ -70,6 +70,8 @@ $routes->group('staff', ['filter' => 'role:STAFF'], static function ($routes) {
     
     $routes->get('internal/control-bond', 'StaffInternalAuditController::controlBond');
     $routes->post('internal/control-bond/save', 'StaffInternalAuditController::saveControlBond');
+    
+    $routes->post('audit-bond/save', 'StaffDataAuditController::saveAuditBond');
     
     $routes->get('progress', 'StaffProgressController::index');
     $routes->get('progress/reject-detail/(:segment)/(:num)', 'StaffProgressController::detailReject/$1/$2');

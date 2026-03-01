@@ -22,21 +22,53 @@ class StaffProgressController extends BaseController
     public function index()
     {
         $userId = session()->get('id');
+        $allReports = [];
+
+        // Daftar Model dan Labelnya untuk mempermudah looping
+        $reportTypes = [
+            ['model' => new AuditBondModel(), 'label' => 'Audit Bond', 'table' => 'audit_bonds'],
+            ['model' => new ComplianceBondModel(), 'label' => 'Compliance Bond', 'table' => 'compliance_bonds'],
+            ['model' => new RiskBondModel(), 'label' => 'Risk Bond', 'table' => 'risk_bonds'],
+            ['model' => new IncidentReportModel(), 'label' => 'Incident Report', 'table' => 'incident_reports'],
+            
+            ['model' => new IntAuditBondModel(), 'label' => 'Int. Audit Bond', 'table' => 'int_audit_bonds'],
+            ['model' => new IntComplianceBondModel(), 'label' => 'Int. Compliance Bond', 'table' => 'int_compliance_bonds'],
+            ['model' => new IntContinuityBondModel(), 'label' => 'Int. Continuity Bond', 'table' => 'int_continuity_bonds'],
+            ['model' => new IntControlBondModel(), 'label' => 'Int. Control Bond', 'table' => 'int_control_bonds'],
+            ['model' => new IntCyberBondModel(), 'label' => 'Int. Cyber Bond', 'table' => 'int_cyber_bonds'],
+            ['model' => new IntFraudBondModel(), 'label' => 'Int. Fraud Bond', 'table' => 'int_fraud_bonds'],
+            ['model' => new IntIncidentBondModel(), 'label' => 'Int. Incident Bond', 'table' => 'int_incident_bonds'],
+            ['model' => new IntRiskBondModel(), 'label' => 'Int. Risk Bond', 'table' => 'int_risk_bonds'],
+            ['model' => new IntThirdPartyBondModel(), 'label' => 'Int. Third Party Bond', 'table' => 'int_third_party_bonds'],
+        ];
+
+        // Ambil semua data milik user ini dari semua tabel
+        foreach ($reportTypes as $type) {
+            $data = $type['model']->where('user_id', $userId)->findAll();
+            
+            foreach ($data as $row) {
+                // Cari field judul (sesuaikan dengan nama kolom di database Anda, misalnya 'title', 'nama_laporan', dll)
+                $judulLaporan = $row['judul'] ?? ($row['title'] ?? ($row['nama_laporan'] ?? 'Dokumen ' . $type['label']));
+
+                $allReports[] = [
+                    'id'          => $row['id'],
+                    'jenis'       => $type['label'],
+                    'judul'       => $judulLaporan,
+                    'status'      => $row['status'] ?? 'PROSES',
+                    'tanggal'     => $row['created_at'] ?? date('Y-m-d H:i:s'),
+                    'report_type' => $type['table'],
+                    'level'       => $row['current_level'] ?? '-'
+                ];
+            }
+        }
+
+        // Urutkan berdasarkan tanggal terbaru (descending)
+        usort($allReports, function($a, $b) {
+            return strtotime($b['tanggal']) <=> strtotime($a['tanggal']);
+        });
         
         $data = [
-            'audit_bonds'           => (new AuditBondModel())->where('user_id', $userId)->findAll(),
-            'compliance_bonds'      => (new ComplianceBondModel())->where('user_id', $userId)->findAll(),
-            'risk_bonds'            => (new RiskBondModel())->where('user_id', $userId)->findAll(),
-            'incident_reports'      => (new IncidentReportModel())->where('user_id', $userId)->findAll(),
-            'int_audit_bonds'       => (new IntAuditBondModel())->where('user_id', $userId)->findAll(),
-            'int_compliance_bonds'  => (new IntComplianceBondModel())->where('user_id', $userId)->findAll(),
-            'int_continuity_bonds'  => (new IntContinuityBondModel())->where('user_id', $userId)->findAll(),
-            'int_control_bonds'     => (new IntControlBondModel())->where('user_id', $userId)->findAll(),
-            'int_cyber_bonds'       => (new IntCyberBondModel())->where('user_id', $userId)->findAll(),
-            'int_fraud_bonds'       => (new IntFraudBondModel())->where('user_id', $userId)->findAll(),
-            'int_incident_bonds'    => (new IntIncidentBondModel())->where('user_id', $userId)->findAll(),
-            'int_risk_bonds'        => (new IntRiskBondModel())->where('user_id', $userId)->findAll(),
-            'int_third_party_bonds' => (new IntThirdPartyBondModel())->where('user_id', $userId)->findAll(),
+            'reports' => $allReports
         ];
 
         return view('staff/progress_monitoring', $data);
@@ -51,10 +83,9 @@ class StaffProgressController extends BaseController
                         ->orderBy('created_at', 'DESC')
                         ->first();
                         
-        if ($this->request->isAJAX()) {
-            return $this->response->setJSON($log);
+        if ($log) {
+            return $this->response->setJSON(['success' => true, 'note' => $log['notes']]);
         }
-        
-        return redirect()->back();
+        return $this->response->setJSON(['success' => false, 'message' => 'Detail tidak ditemukan']);
     }
 }
