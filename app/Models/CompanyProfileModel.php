@@ -4,12 +4,12 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class UserModel extends Model
+class CompanyProfileModel extends Model
 {
-    protected $table            = 'users';
+    protected $table            = 'company_profile';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $allowedFields    = ['fullname', 'username', 'password', 'level', 'photo'];
+    protected $allowedFields    = ['company_name', 'address', 'leader_name', 'logo'];
     protected $useTimestamps    = true;
 }

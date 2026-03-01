@@ -10,12 +10,14 @@ class RoleFilter implements FilterInterface
 {
     public function before(RequestInterface $request, $arguments = null)
     {
-        $userLevel = session()->get('level');
+        if (!session()->get('logged_in')) {
+            return redirect()->to('/login');
+        }
 
-        if ($arguments !== null) {
-            if (!in_array($userLevel, $arguments)) {
-                return redirect()->to('/dashboard')->with('error', 'Akses Ditolak! Anda tidak memiliki izin untuk membuka halaman tersebut.');
-            }
+        $userRole = session()->get('level');
+
+        if ($arguments && !in_array($userRole, $arguments)) {
+            return redirect()->back()->with('error', 'Akses ditolak.');
         }
     }
 

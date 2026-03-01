@@ -3,47 +3,26 @@
 namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
-use CodeIgniter\Filters\CSRF;
-use CodeIgniter\Filters\DebugToolbar;
-use CodeIgniter\Filters\ForceHTTPS;
-use CodeIgniter\Filters\Honeypot;
-use CodeIgniter\Filters\InvalidChars;
-use CodeIgniter\Filters\PageCache;
-use CodeIgniter\Filters\PerformanceMetrics;
-use CodeIgniter\Filters\SecureHeaders;
 use App\Filters\AuthFilter;
 use App\Filters\RoleFilter;
 
 class Filters extends BaseConfig
 {
     public array $aliases = [
-        'csrf'          => CSRF::class,
-        'toolbar'       => DebugToolbar::class,
-        'honeypot'      => Honeypot::class,
-        'invalidchars'  => InvalidChars::class,
-        'secureheaders' => SecureHeaders::class,
-        'forcehttps'    => ForceHTTPS::class,
-        'pagecache'     => PageCache::class,
-        'performance'   => PerformanceMetrics::class,
+        'csrf'          => \CodeIgniter\Filters\CSRF::class,
+        'toolbar'       => \CodeIgniter\Filters\DebugToolbar::class,
+        'honeypot'      => \CodeIgniter\Filters\Honeypot::class,
+        'invalidchars'  => \CodeIgniter\Filters\InvalidChars::class,
+        'secureheaders' => \CodeIgniter\Filters\SecureHeaders::class,
         'auth'          => AuthFilter::class,
         'role'          => RoleFilter::class,
     ];
 
-    public array $required = [
-        'before' => [
-            'forcehttps',
-            'pagecache',
-        ],
-        'after' => [
-            'pagecache',
-            'performance',
-            'toolbar',
-        ],
-    ];
-
     public array $globals = [
         'before' => [],
-        'after'  => [],
+        'after'  => [
+            'toolbar',
+        ],
     ];
 
     public array $methods = [];

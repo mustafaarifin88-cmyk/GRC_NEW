@@ -4,12 +4,12 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class HierarchyModel extends Model
+class MasterDataModel extends Model
 {
-    protected $table            = 'hierarchy';
+    protected $table            = 'master_data';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $allowedFields    = ['parent_id', 'child_id'];
+    protected $allowedFields    = ['category', 'name', 'description'];
     protected $useTimestamps    = false;
 }

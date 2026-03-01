@@ -4,12 +4,12 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class UserModel extends Model
+class ApprovalLogModel extends Model
 {
-    protected $table            = 'users';
+    protected $table            = 'approval_logs';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $allowedFields    = ['fullname', 'username', 'password', 'level', 'photo'];
+    protected $allowedFields    = ['report_id', 'report_type', 'user_id', 'status', 'reason'];
     protected $useTimestamps    = true;
 }

@@ -1,113 +1,72 @@
-<div id="sidebar">
-    <div class="sidebar-wrapper active">
-        <div class="sidebar-header position-relative">
-            <div class="d-flex justify-content-between align-items-center">
-                <div class="logo">
-                    <a href="<?= base_url('/dashboard') ?>" class="fs-4 fw-bold">GRC System</a>
-                </div>
-                <div class="theme-toggle d-flex gap-2  align-items-center mt-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--system-uicons" width="20" height="20" preserveAspectRatio="xMidYMid meet" viewBox="0 0 21 21"><g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 14.5c2.219 0 4-1.763 4-3.982a4.003 4.003 0 0 0-4-4.018c-2.219 0-4 1.781-4 4c0 2.219 1.781 4 4 4zM4.136 4.136L5.55 5.55m9.9 9.9l1.414 1.414M1.5 10.5h2m14 0h2M4.135 16.863L5.55 15.45m9.899-9.9l1.414-1.415M10.5 19.5v-2m0-14v-2" opacity=".3"></path><g transform="translate(-210 -1)"><path d="M220.5 2.5v2m6.5.5l-1.5 1.5"></path><circle cx="220.5" cy="11.5" r="4"></circle><path d="m214 5l1.5 1.5m5 14v-2m6.5-.5l-1.5-1.5M214 18l1.5-1.5m-4-5h2m14 0h2"></path></g></g></svg>
-                    <div class="form-check form-switch fs-6">
-                        <input class="form-check-input  me-0" type="checkbox" id="toggle-dark" style="cursor: pointer">
-                        <label class="form-check-label"></label>
-                    </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--mdi" width="20" height="20" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="m17.75 4.09l-2.53 1.94l.91 3.06l-2.63-1.81l-2.63 1.81l.91-3.06l-2.53-1.94L12.44 4l1.06-3l1.06 3l3.19.09m3.5 6.91l-1.64 1.25l.59 1.98l-1.7-1.17l-1.7 1.17l.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95l2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85c-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14c.4-.4.82-.76 1.27-1.08c.75-.53 1.93.36 1.85 1.19c-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82c-2.81 3.14-2.7 7.96.31 10.98c3.02 3.01 7.84 3.12 10.98.31Z"></path></svg>
-                </div>
-                <div class="sidebar-toggler  x">
-                    <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="sidebar-menu">
-            <ul class="menu">
-                <li class="sidebar-title">Menu Utama</li>
-
-                <li class="sidebar-item">
-                    <a href="<?= base_url('/dashboard') ?>" class='sidebar-link'>
-                        <i class="bi bi-grid-fill"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-
-                <?php if(session()->get('level') == 'ADMIN'): ?>
-                    <li class="sidebar-title">Administrator</li>
-                    
-                    <li class="sidebar-item">
-                        <a href="<?= base_url('/admin/setting-company') ?>" class='sidebar-link'>
-                            <i class="bi bi-building"></i>
-                            <span>Profil Perusahaan</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="<?= base_url('/admin/users') ?>" class='sidebar-link'>
-                            <i class="bi bi-people-fill"></i>
-                            <span>Kelola Pengguna</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="<?= base_url('/admin/hierarchy') ?>" class='sidebar-link'>
-                            <i class="bi bi-diagram-3-fill"></i>
-                            <span>Hierarki Approval</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="<?= base_url('/admin/monitor-reports') ?>" class='sidebar-link'>
-                            <i class="bi bi-pc-display-horizontal"></i>
-                            <span>Monitor Laporan</span>
-                        </a>
-                    </li>
-                <?php endif; ?>
-
-                <?php if(session()->get('level') == 'STAFF'): ?>
-                    <li class="sidebar-title">Operasional GRC</li>
-
-                    <li class="sidebar-item">
-                        <a href="<?= base_url('/report/tracking') ?>" class='sidebar-link'>
-                            <i class="bi bi-signpost-split-fill"></i>
-                            <span>Tracking Laporan</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item has-sub">
-                        <a href="#" class='sidebar-link'>
-                            <i class="bi bi-file-earmark-medical-fill"></i>
-                            <span>Input Data Audit</span>
-                        </a>
-                        <ul class="submenu">
-                            <li class="submenu-item"><a href="<?= base_url('/staff/data-audit/audit-bond') ?>" class="submenu-link">Audit Bond</a></li>
-                            <li class="submenu-item"><a href="<?= base_url('/staff/data-audit/compliance-bond') ?>" class="submenu-link">Compliance Bond</a></li>
-                            <li class="submenu-item"><a href="<?= base_url('/staff/data-audit/risk-bond') ?>" class="submenu-link">Risk Bond</a></li>
-                        </ul>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="<?= base_url('/staff/data-audit/incident-report') ?>" class='sidebar-link'>
-                            <i class="bi bi-exclamation-diamond-fill"></i>
-                            <span>Lapor Insiden</span>
-                        </a>
-                    </li>
-                <?php endif; ?>
-
-                <?php if(in_array(session()->get('level'), ['KEPALA UNIT', 'SUPERVISOR', 'MANAGERIAL', 'PIMPINAN TINGGI'])): ?>
-                    <?php $segment = strtolower(str_replace(' ', '-', session()->get('level'))); ?>
-                    <li class="sidebar-title">Manajemen Laporan</li>
-                    
-                    <li class="sidebar-item">
-                        <a href="<?= base_url('/' . $segment . '/reports') ?>" class='sidebar-link'>
-                            <i class="bi bi-clipboard-check-fill"></i>
-                            <span>Approval Laporan</span>
-                        </a>
-                    </li>
-
-                    <?php if(in_array(session()->get('level'), ['SUPERVISOR', 'MANAGERIAL'])): ?>
-                        <li class="sidebar-item">
-                            <a href="<?= base_url('/' . $segment . '/reports/print-recap') ?>" target="_blank" class='sidebar-link'>
-                                <i class="bi bi-printer-fill"></i>
-                                <span>Cetak Rekap Laporan</span>
-                            </a>
-                        </li>
-                    <?php endif; ?>
-                <?php endif; ?>
-
-            </ul>
-        </div>
-    </div>
+<?php
+helper('grc');
+$level = session()->get('level');
+$menuItems = generate_sidebar_menu($level);
+$gradient = get_sidebar_gradient($level);
+?>
+<aside id="sidebar" class="<?= $gradient ?> text-white w-72 min-h-screen fixed left-0 top-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out z-50 flex flex-col shadow-2xl">
+<div class="p-6 flex items-center justify-between border-b border-white/10 relative overflow-hidden">
+<div class="absolute -right-10 -top-10 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+<div class="flex items-center space-x-3 relative z-10">
+<div class="w-8 h-8 bg-white text-blue-600 rounded-lg flex items-center justify-center font-bold text-xl">G</div>
+<h2 class="text-xl font-bold tracking-widest uppercase">GRC Hub</h2>
 </div>
+<button id="closeSidebar" class="md:hidden p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition">
+<i class="bi bi-x-lg"></i>
+</button>
+</div>
+<div class="p-6 border-b border-white/10 flex items-center space-x-4 bg-black/5">
+<div class="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center overflow-hidden border border-white/30 shadow-inner flex-shrink-0">
+<?php if(session()->get('photo')): ?>
+<img src="<?= base_url('uploads/profiles/' . session()->get('photo')) ?>" alt="Profile" class="w-full h-full object-cover">
+<?php else: ?>
+<i class="bi bi-person-fill text-2xl"></i>
+<?php endif; ?>
+</div>
+<div class="overflow-hidden">
+<p class="text-sm font-bold truncate text-white"><?= session()->get('fullname') ?></p>
+<span class="inline-block mt-1 px-2.5 py-0.5 text-[10px] font-semibold tracking-wider text-blue-900 bg-blue-100 rounded-full uppercase">
+<?= $level ?>
+</span>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto py-6 custom-scrollbar">
+<ul class="space-y-1.5 px-4">
+<?php foreach ($menuItems as $item) : ?>
+<?php if (isset($item['submenu'])) : ?>
+<li class="relative" x-data="{ open: false }">
+<button @click="open = !open" class="w-full flex items-center justify-between px-4 py-3 text-sm font-medium rounded-xl hover:bg-white/15 transition duration-200 group">
+<div class="flex items-center space-x-3.5">
+<i class="<?= $item['icon'] ?> text-lg text-white/70 group-hover:text-white transition"></i>
+<span><?= $item['title'] ?></span>
+</div>
+<i class="bi bi-chevron-down text-[10px] transition-transform duration-300" :class="{'rotate-180': open}"></i>
+</button>
+<ul x-show="open" x-collapse.duration.300ms class="mt-1 space-y-1 pl-12 pr-2 pb-2">
+<?php foreach ($item['submenu'] as $sub) : ?>
+<li>
+<a href="<?= base_url($sub['url']) ?>" class="block px-3 py-2 text-sm text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition duration-200 relative before:content-[''] before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-1.5 before:h-1.5 before:bg-white/30 hover:before:bg-white before:rounded-full">
+<?= $sub['title'] ?>
+</a>
+</li>
+<?php endforeach; ?>
+</ul>
+</li>
+<?php else : ?>
+<li>
+<a href="<?= base_url($item['url']) ?>" class="flex items-center space-x-3.5 px-4 py-3 text-sm font-medium rounded-xl hover:bg-white/15 transition duration-200 group">
+<i class="<?= $item['icon'] ?> text-lg text-white/70 group-hover:text-white transition"></i>
+<span><?= $item['title'] ?></span>
+</a>
+</li>
+<?php endif; ?>
+<?php endforeach; ?>
+</ul>
+</nav>
+<div class="p-5 border-t border-white/10 bg-black/10">
+<a href="<?= base_url('/logout') ?>" class="flex items-center justify-center space-x-2 w-full px-4 py-3 text-sm font-bold rounded-xl bg-red-500/80 hover:bg-red-500 text-white shadow-lg shadow-red-500/20 transition duration-200 transform hover:-translate-y-0.5">
+<i class="bi bi-power text-lg"></i>
+<span>Logout System</span>
+</a>
+</div>
+</aside>

@@ -4,12 +4,12 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class UserModel extends Model
+class FileDataModel extends Model
 {
-    protected $table            = 'users';
+    protected $table            = 'file_data';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $allowedFields    = ['fullname', 'username', 'password', 'level', 'photo'];
+    protected $allowedFields    = ['related_table', 'related_id', 'file_name', 'file_path', 'file_type'];
     protected $useTimestamps    = true;
 }

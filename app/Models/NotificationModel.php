@@ -10,15 +10,6 @@ class NotificationModel extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    
+    protected $allowedFields    = ['user_id', 'sender_id', 'title', 'message', 'is_read', 'url'];
     protected $useTimestamps    = true;
-
-    // Tabel untuk menyimpan notifikasi (seperti laporan ditolak/di-approve)
-    protected $allowedFields    = [
-        'id_user',       // User yang menerima notifikasi
-        'judul',
-        'pesan',
-        'link',          // URL untuk di-klik
-        'is_read'        // 0 = belum dibaca, 1 = sudah dibaca
-    ];
 }

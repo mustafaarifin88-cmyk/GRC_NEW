@@ -2,95 +2,83 @@
 
 use CodeIgniter\Router\RouteCollection;
 
-$routes->get('/', 'Auth::index');
-$routes->post('/login/process', 'Auth::login');
-$routes->get('/logout', 'Auth::logout');
+$routes->get('/', 'AuthController::login');
+$routes->get('/login', 'AuthController::login');
+$routes->post('/process-login', 'AuthController::processLogin');
+$routes->get('/logout', 'AuthController::logout');
 
-$routes->group('', ['filter' => 'auth'], function ($routes) {
-    $routes->get('/dashboard', 'Auth::dashboardDispatcher'); 
-    $routes->get('/profile/edit', 'Profile::edit');
-    $routes->post('/profile/update', 'Profile::update');
-    $routes->get('/report/tracking', 'Profile::tracking');
-});
-
-$routes->group('admin', ['filter' => ['auth', 'role:ADMIN']], function ($routes) {
-    $routes->get('dashboard', 'Admin::index');
-    $routes->get('setting-company', 'Admin::settingCompany');
-    $routes->post('setting-company/save', 'Admin::saveCompany');
-    $routes->post('setting-company/update', 'Admin::saveCompany');
-    $routes->get('users', 'Admin::crudUser');
-    $routes->post('users/save', 'Admin::saveUser');
-    $routes->post('users/import-excel', 'Admin::importExcel');
-    $routes->get('hierarchy', 'Admin::settingHierarchy');
-    $routes->post('hierarchy/store', 'Admin::saveHierarchy');
-    $routes->post('hierarchy/save', 'Admin::saveHierarchy');
-    $routes->get('monitor-reports', 'Admin::monitorReports');
-    $routes->post('users/store', 'Admin::storeUser');
-    $routes->post('users/update/(:num)', 'Admin::updateUser/$1');
-    $routes->get('users/delete/(:num)', 'Admin::deleteUser/$1');
-});
-
-$routes->group('staff', ['filter' => ['auth', 'role:STAFF']], function ($routes) {
-    $routes->get('dashboard', 'Staff::index');
+$routes->group('', ['filter' => 'auth'], static function ($routes) {
+    $routes->get('profile', 'ProfileController::index');
+    $routes->post('profile/update', 'ProfileController::update');
     
-    $routes->group('data-audit', function ($routes) {
-        $routes->get('audit-bond', 'FormAudit::auditBond');
-        $routes->post('audit-bond/save', 'FormAudit::saveAuditBond');
-        $routes->get('compliance-bond', 'FormAudit::complianceBond');
-        $routes->post('compliance-bond/save', 'FormAudit::saveComplianceBond');
-        $routes->get('risk-bond', 'FormAudit::riskBond');
-        $routes->post('risk-bond/save', 'FormAudit::saveRiskBond');
-        $routes->get('incident-report', 'FormAudit::incidentReport');
-        $routes->post('incident-report/save', 'FormAudit::saveIncidentReport');
-    });
-
-    $routes->group('audit-internal', function ($routes) {
-        $routes->get('audit-bond', 'FormAuditInternal::auditBond');
-        $routes->get('compliance-bond', 'FormAuditInternal::complianceBond');
-        $routes->get('risk-bond', 'FormAuditInternal::riskBond');
-        $routes->get('fraud-bond', 'FormAuditInternal::fraudBond');
-        $routes->get('incident-bond', 'FormAuditInternal::incidentBond');
-        $routes->get('cyber-bond', 'FormAuditInternal::cyberBond');
-        $routes->get('third-party-bond', 'FormAuditInternal::thirdPartyBond');
-        $routes->get('continuity-bond', 'FormAuditInternal::continuityBond');
-        $routes->get('control-bond', 'FormAuditInternal::controlBond');
-        
-        $routes->post('(:segment)/save', 'FormAuditInternal::saveData/$1');
-    });
+    $routes->get('notifications', 'NotificationController::index');
+    $routes->get('notifications/read/(:num)', 'NotificationController::markAsRead/$1');
 });
 
-$routes->group('kepala-unit', ['filter' => ['auth', 'role:KEPALA UNIT']], function ($routes) {
-    $routes->get('dashboard', 'KepalaUnit::index');
-    $routes->get('reports', 'KepalaUnit::reportList');
-    $routes->get('reports/detail/(:num)', 'KepalaUnit::reportDetail/$1');
-    $routes->post('reports/approve', 'KepalaUnit::approveReport');
-    $routes->post('reports/reject', 'KepalaUnit::rejectReport');
+$routes->group('admin', ['filter' => 'role:ADMIN'], static function ($routes) {
+    $routes->get('dashboard', 'AdminController::dashboard');
+    
+    $routes->get('company-profile', 'AdminController::companyProfile');
+    $routes->post('company-profile/update', 'AdminController::updateCompanyProfile');
+    
+    $routes->get('users', 'AdminController::users');
+    $routes->post('users/save', 'AdminController::saveUser');
+    $routes->post('users/import', 'AdminController::importUsers');
+    
+    $routes->get('hierarchy', 'AdminController::hierarchy');
+    $routes->get('reports', 'AdminController::reports');
 });
 
-$routes->group('supervisor', ['filter' => ['auth', 'role:SUPERVISOR']], function ($routes) {
-    $routes->get('dashboard', 'Supervisor::index');
-    $routes->get('reports', 'Supervisor::reportList');
-    $routes->get('reports/detail/(:num)', 'Supervisor::reportDetail/$1');
-    $routes->post('reports/approve', 'Supervisor::approveReport');
-    $routes->post('reports/reject', 'Supervisor::rejectReport');
-    $routes->get('reports/print/(:num)', 'Supervisor::printReport/$1');
-    $routes->get('reports/print-recap', 'Supervisor::printRecap');
+$routes->group('staff', ['filter' => 'role:STAFF'], static function ($routes) {
+    $routes->get('dashboard', 'AuthController::processLogin');
+    
+    $routes->get('audit/audit-bond', 'StaffDataAuditController::auditBond');
+    $routes->post('audit/audit-bond/save', 'StaffDataAuditController::saveAuditBond');
+    
+    $routes->get('audit/compliance-bond', 'StaffDataAuditController::complianceBond');
+    $routes->post('audit/compliance-bond/save', 'StaffDataAuditController::saveComplianceBond');
+    
+    $routes->get('audit/risk-bond', 'StaffDataAuditController::riskBond');
+    $routes->post('audit/risk-bond/save', 'StaffDataAuditController::saveRiskBond');
+    
+    $routes->get('audit/incident-report', 'StaffDataAuditController::incidentReport');
+    $routes->post('audit/incident-report/save', 'StaffDataAuditController::saveIncidentReport');
+    
+    $routes->get('internal/audit-bond', 'StaffInternalAuditController::auditBond');
+    $routes->post('internal/audit-bond/save', 'StaffInternalAuditController::saveAuditBond');
+    
+    $routes->get('internal/compliance-bond', 'StaffInternalAuditController::complianceBond');
+    $routes->post('internal/compliance-bond/save', 'StaffInternalAuditController::saveComplianceBond');
+    
+    $routes->get('internal/risk-bond', 'StaffInternalAuditController::riskBond');
+    $routes->post('internal/risk-bond/save', 'StaffInternalAuditController::saveRiskBond');
+    
+    $routes->get('internal/fraud-bond', 'StaffInternalAuditController::fraudBond');
+    $routes->post('internal/fraud-bond/save', 'StaffInternalAuditController::saveFraudBond');
+    
+    $routes->get('internal/incident-bond', 'StaffInternalAuditController::incidentBond');
+    $routes->post('internal/incident-bond/save', 'StaffInternalAuditController::saveIncidentBond');
+    
+    $routes->get('internal/cyber-bond', 'StaffInternalAuditController::cyberBond');
+    $routes->post('internal/cyber-bond/save', 'StaffInternalAuditController::saveCyberBond');
+    
+    $routes->get('internal/third-party-bond', 'StaffInternalAuditController::thirdPartyBond');
+    $routes->post('internal/third-party-bond/save', 'StaffInternalAuditController::saveThirdPartyBond');
+    
+    $routes->get('internal/continuity-bond', 'StaffInternalAuditController::continuityBond');
+    $routes->post('internal/continuity-bond/save', 'StaffInternalAuditController::saveContinuityBond');
+    
+    $routes->get('internal/control-bond', 'StaffInternalAuditController::controlBond');
+    $routes->post('internal/control-bond/save', 'StaffInternalAuditController::saveControlBond');
+    
+    $routes->get('progress', 'StaffProgressController::index');
+    $routes->get('progress/reject-detail/(:segment)/(:num)', 'StaffProgressController::detailReject/$1/$2');
 });
 
-$routes->group('managerial', ['filter' => ['auth', 'role:MANAGERIAL']], function ($routes) {
-    $routes->get('dashboard', 'Managerial::index');
-    $routes->get('reports', 'Managerial::reportList');
-    $routes->get('reports/detail/(:num)', 'Managerial::reportDetail/$1');
-    $routes->post('reports/approve', 'Managerial::approveReport');
-    $routes->post('reports/reject', 'Managerial::rejectReport');
-    $routes->get('reports/print/(:num)', 'Managerial::printReport/$1');
-    $routes->get('reports/print-recap', 'Managerial::printRecap');
-});
-
-$routes->group('pimpinan-tinggi', ['filter' => ['auth', 'role:PIMPINAN TINGGI']], function ($routes) {
-    $routes->get('dashboard', 'PimpinanTinggi::index');
-    $routes->get('reports', 'PimpinanTinggi::reportList');
-    $routes->get('reports/detail/(:num)', 'PimpinanTinggi::reportDetail/$1');
-    $routes->post('reports/approve', 'PimpinanTinggi::approveReport');
-    $routes->post('reports/reject', 'PimpinanTinggi::rejectReport');
+$routes->group('leader', ['filter' => 'role:PIMPINAN TINGGI,MANAGERIAL,SUPERVISOR,KEPALA UNIT'], static function ($routes) {
+    $routes->get('dashboard', 'LeaderController::dashboard');
+    $routes->get('reports', 'LeaderController::reports');
+    $routes->get('approve/(:num)/(:segment)', 'LeaderController::approve/$1/$2');
+    $routes->post('reject', 'LeaderController::reject');
+    $routes->get('print-pdf/(:num)', 'LeaderController::printPdf/$1');
 });
